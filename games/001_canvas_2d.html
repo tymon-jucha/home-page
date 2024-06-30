@@ -7,9 +7,15 @@
     <body>
         <h1>oto puste pole gry</h1>
         <canvas id="pole-gry" width="1600" height="900" style="background-color: #cccccc;"></canvas>
+        <div>
+            x: <input id="position-x" type="text" disabled>
+            y: <input id="position-y" type="text" disabled>
+        </div>
     </body>
 </html>
 <script>
+
+    
     // znajdź element pola gdy po identyfikatorze "pole-gry"
     const canvas = document.getElementById("pole-gry");
 
@@ -20,4 +26,6 @@
     ctx.beginPath();
     ctx.arc(400, 200, 30, 0, 2 * Math.PI);
     ctx.stroke();
+
+
 </script>
