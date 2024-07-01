@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>canvas 2d</title>
+    </head>
+    <body>
+        <h1>odbijająca piłka</h1>
+        <canvas id="pole-gry" width="1600" height="900" style="background-color: #cccccc; float: left"></canvas>
+        <div>
+            sx: <input id="input-sx" type="text" disabled><br/>
+            sx: <input id="input-sy" type="text" disabled><br/>
+            vx: <input id="input-vx" type="text" disabled><br/>
+            vy: <input id="input-vy" type="text" disabled><br/>
+        </div>
+    </body>
+</html>
+<script>
+    // definicja stałych
+    const fps = 100;                          // ilość klatek na sekundę
+    const interval = Math.round(1000 / fps); // czas trwania 1 klatki
+    const partFps = 1 / fps;                 // proporcjonalna część klatki
+        
+    const canvas = document.getElementById("pole-gry"); // znajdź element pola gdy po identyfikatorze "pole-gry"
+    const ctx = canvas.getContext("2d"); // pobierz kontekst służący do rysowania 2D   
+
+    const width = Number(canvas.getAttribute("width"));   // szerokość ekranu gry
+    const height = Number(canvas.getAttribute("height")); // wysokość ekranu gry
+    const inputSx = document.getElementById("input-sx");
+    const inputSy = document.getElementById("input-sy");
+    const inputVx = document.getElementById("input-vx");
+    const inputVy = document.getElementById("input-vy");
+
+    // zmienne
+    let sx = 400;  // położenie x środka
+    let sy = 200;  // położenie y środka
+    let vx = 600;    // prędkość x środka
+    let vy = 400;    // prędkość y środka
+
+    // 
+    window.setInterval(() => {
+        moveFrame();
+        drawFrame();
+    }, interval);
+
+    // animuje pojedynczą klatkę
+    function moveFrame() {
+        sx += vx * partFps;
+        sy += vy * partFps;
+
+        if (sx > width) {
+            sx = width;
+            vx = -vx;
+        }
+
+        if (sy > height) {
+            sy = height;
+            vy = -vy;
+        }
+
+        if (sx < 0) {
+            sx = 0;
+            vx = -vx;
+        }
+
+        if (sy < 0) {
+            sy = 0;
+            vy = -vy;
+        }
+
+
+    }
+
+    // rysuje pojedynczą klatkę
+    function drawFrame() {
+        // zmaż tło rysując prostokąt
+        ctx.fillStyle = "#dddddd";
+        ctx.fillRect(0, 0, width, height);
+
+        // narysuj koło z środkiem w punkcie (sx, sy) i promieniu 30 pikseli  
+        ctx.beginPath();
+        ctx.arc(sx, sy, 30, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        // aktualizuje pola
+        inputSx.setAttribute("value", sx);
+        inputSy.setAttribute("value", sy);
+        inputVx.setAttribute("value", vx);
+        inputVy.setAttribute("value", vy);
+    }
+
+</script>
